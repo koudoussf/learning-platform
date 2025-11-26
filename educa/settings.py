@@ -29,9 +29,12 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 LOGIN_REDIRECT_URL = reverse_lazy("student_course_list")
+
+ASGI_APPLICATION = "educa.asgi.application"
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "students.apps.StudentsConfig",
     "courses.apps.CoursesConfig",
     "django.contrib.admin",
@@ -44,6 +47,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "redisboard",
     "rest_framework",
+    "chat.apps.ChatConfig",
 ]
 
 MIDDLEWARE = [
@@ -158,4 +162,14 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
     ]
+}
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    }
 }
